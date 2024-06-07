@@ -1,22 +1,24 @@
 import React, { useState } from 'react';
 import { Form, Input, Button, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { auth } from '../firebaseConfig';
 import signupSvg from '../assets/signUp.svg';
 import signupLeft from '../assets/signupLeft.svg';
+import { useNavigate } from 'react-router-dom'; 
 
 const Login = () => {
     const [loading, setLoading] = useState(false);
-
+    const navigate = useNavigate();
     const signInWithGoogle = async () => {
         setLoading(true);
         const provider = new GoogleAuthProvider();
         try {
             const result = await signInWithPopup(auth, provider);
             const user = result.user;
-            // Handle user login
+            
             message.success('Login successful!');
+            navigate('/dataentry'); 
         } catch (error) {
             message.error('Failed to log in: ' + error.message);
         }
@@ -29,6 +31,7 @@ const Login = () => {
         try {
             await signInWithEmailAndPassword(auth, email, password);
             message.success('Login successful!');
+            navigate('/dataentry');
         } catch (error) {
             message.error('Failed to log in: ' + error.message);
         }
@@ -37,7 +40,7 @@ const Login = () => {
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-[#21453C]">
-            <div className="flex flex-col md:flex-row items-center justify-between w-full max-w-5xl p-4 md:p-8">
+            <div className="flex flex-col md:flex-row items-center justify-between w-full max-w-5xl p-4">
                 <div className="w-full md:w-1/2 p-8">
                     <h2 className="text-base font-medium text-white mb-2">WELCOME TO</h2>
                     <img src={signupLeft} alt="Breathe ESG" className="fill-white mb-6" />
@@ -50,7 +53,7 @@ const Login = () => {
                         <img src={signupSvg} alt="Login Logo" className="w-32 h-32" />
                     </div>
 
-                    <div className="mt-6 max-w-96 bg-[#235E4A] p-8 rounded-lg shadow-lg">
+                    <div className="mx-6 max-w-96 bg-[#235E4A] p-8 rounded-lg shadow-lg">
                         <h1 className="text-2xl font-semibold text-white mb-2">Login</h1>
 
                         <p className="font-regular text-[#F3F3F3] mb-4">Enter your registered Email ID to continue</p>
@@ -66,7 +69,7 @@ const Login = () => {
                                 name="email"
                                 rules={[{ required: true, message: 'Please input your Email!' }]}
                             >
-                                <Input prefix={<UserOutlined />} placeholder="Your Email ID" className="rounded-md h-12" />
+                                <Input prefix={<UserOutlined />} placeholder="Your Email ID" className="rounded-md h-10" />
                             </Form.Item>
                             <Form.Item
                                 label="Password"
@@ -78,7 +81,7 @@ const Login = () => {
                                     prefix={<LockOutlined />}
                                     type="password"
                                     placeholder="Password"
-                                    className="rounded-md h-12"
+                                    className="rounded-md h-10"
                                 />
                             </Form.Item>
 

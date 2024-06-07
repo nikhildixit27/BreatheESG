@@ -5,8 +5,10 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../firebaseConfig';
 import signupSvg from '../assets/signUp.svg';
 import signupLeft from '../assets/signupLeft.svg';
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
 
     const onFinish = async (values) => {
@@ -15,6 +17,7 @@ const Signup = () => {
         try {
             await createUserWithEmailAndPassword(auth, email, password);
             message.success('Sign up successful!');
+            navigate('/dataentry');
         } catch (error) {
             message.error('Failed to sign up: ' + error.message);
         }
@@ -23,7 +26,7 @@ const Signup = () => {
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-[#21453C]">
-            <div className="flex flex-col md:flex-row items-center justify-between w-full max-w-5xl p-4 md:p-8">
+            <div className="flex flex-col md:flex-row items-center justify-between w-full max-w-5xl p-4">
                 <div className="w-full md:w-1/2 p-8">
                     
                     <h2 className="text-base font-medium text-white mb-2">WELCOME TO</h2>
